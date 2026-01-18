@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "ms-python.python", // Python - Python language support and features
+    "ms-python.vscode-pylance", // Pylance - fast, feature-rich language support for Python
+    "charliermarsh.ruff", // Ruff - Linter, Formatter, and Import Organizer for Python
+    "task.vscode-task" // Taskfile - Task runner for VS Code
+  ]
+}
