@@ -10,3 +10,48 @@ requires-python = ">=3.13"
 dependencies = []
 
 
+[dependency-groups]
+dev = [
+    "ipykernel>=7.1.0",
+    "mypy>=1.19.1",
+    "pytest>=9.0.2",
+    "pytest-cov>=7.0.0",
+    "ruff>=0.14.13",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+
+
+[tool.ruff]
+line-length = 88
+# target-version = "py313"
+
+[tool.ruff.lint]
+# "E" (Error), "F" (Flake8), "I" (Isort/Import sorting)
+select = ["E", "F", "I", "B", "W"]
+fixable = ["ALL"]
+# ignore = ["E501"]
+
+[tool.ruff.format]
+quote-style = "double"
+# indent-style = "space"
+
+
+[tool.mypy]
+# python_version = "3.11"
+# strict = true
+# ignore_missing_imports = true
+exclude = ["venv", ".venv", "build"]
+
+
+[tool.pyright] # This is used by VS Code's Pylance extension, and ensures consistency across developers' environments
+include = ["."]
+exclude = ["**/node_modules", "**/__pycache__", ".venv"]
+venvPath = "."
+venv = ".venv"
+typeCheckingMode = "standard" # Options: "off", "basic", "standard", "strict"
+autoImportCompletions = true
+reportMissingTypeStubs = false
+# pythonVersion = "3.11"

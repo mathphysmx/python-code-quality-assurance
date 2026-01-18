@@ -1,0 +1,46 @@
+version: '3'
+
+tasks:
+
+  uv-env-setup:
+    desc: Set up Python uv environment and install dev dependencies
+    cmds:
+      # - uv python install 3.13
+      - uv add --dev pytest pytest-cov ipykernel ruff mypy pyright
+      - uv sync --frozen
+
+  sync:
+    desc: Sync dependencies and install hooks
+    cmds:
+      - uv sync
+      - uv run pre-commit install
+      - uv run pre-commit install --hook-type pre-push
+
+  ci:lint:
+    desc: Run Ruff via uv
+    cmds:
+      - uv run ruff check .
+      - uv run ruff format --check .
+
+  typecheck:mypy: # Compare with other typecheckers like Astral's TY or pyrefly in 2027 since now they are immature
+    desc: Run Mypy via uv
+    cmds:
+      - uv run mypy .
+
+  typecheck:pyright:
+    desc: Run static type analysis with Pyright
+    cmds:
+      - uv run pyright .
+  
+  test:
+    desc: Run Pytest via uv
+    cmds:
+      - uv run pytest tests/
+
+  ci:full-suite:
+    desc: Run all checks
+    cmds:
+      - task: ci:lint
+      - task: typecheck:pyright # default VSCode type checker used by Pylance VS Code extension, but lacks some features of Mypy
+      - task: typecheck:mypy
+      - task: test

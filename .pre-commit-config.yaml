@@ -1,0 +1,17 @@
+repos:
+  - repo: local
+    hooks:
+      - id: task-lint
+        name: Ruff Lint (uv)
+        entry: uv run task ci:lint
+        language: system
+        types: [python]
+        pass_filenames: false
+        stages: [pre-commit]
+
+      - id: task-full-suite
+        name: Full CI Suite (uv)
+        entry: uv run task ci:full-suite
+        language: system
+        stages: [pre-push]
+        pass_filenames: false
