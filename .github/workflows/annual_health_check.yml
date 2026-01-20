@@ -9,8 +9,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - name: Install uv
         uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+          version: "latest"
+
+      - name: Install Task
+        uses: go-task/setup-task@v1
 
       - name: Run CI Suite
         # This ensures the code still works with the CURRENT locked version
@@ -33,7 +40,7 @@ jobs:
         if: failure() || steps.check_version.outputs.upgrade_found == 'true'
         run: |
           # This triggers a GitHub Notification/Email to the repo owner
-          echo "::error::Maintenance check failed or new Python version ($LATEST) found!"
+          echo "::error::Maintenance check failed or new Python version found!"
           exit 1
 
 ### Approach 2:
@@ -43,8 +50,8 @@ jobs:
         shell: python
         run: |
           import datetime, os
-          # Logic: Current Year - 2 (Ensures version is at least 1.4 years old)
-          # Python 3.13 (Oct 2024) becomes target in March 2026
+          # Logic: Target minor version corresponds to (Current Year - 2).
+          # Mapping years to Python 3.x (3.2 -> 2011) gives: minor = (year - 2) - 2011 == year - 2013.
           target_minor = datetime.date.today().year - 2013 
           version = f"3.{target_minor}"
           with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
