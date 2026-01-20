@@ -17,9 +17,7 @@ jobs:
           version: "latest"
 
       - name: Install Task
-        uses: arduino/setup-task@v2
-        with:
-          version: "latest"
+        uses: go-task/setup-task@v1
 
       - name: Run CI Suite
         # This ensures the code still works with the CURRENT locked version
