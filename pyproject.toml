@@ -31,8 +31,8 @@ line-length = 88
 
 [tool.ruff.lint]
 # "E" (Error), "F" (Flake8), "I" (Isort/Import sorting), "B" (Bugbear), "W" (Warning)
-# "C90" (McCabe complexity), "PLR" (Pylint refactor - complexity checks)
-select = ["E", "F", "I", "B", "W", "C90", "PLR0912", "PLR0913", "PLR0915"]
+# "C90" (McCabe complexity), "PLR" (Pylint refactor - complexity checks), "SIM" (flake8-simplify - PEP 20)
+select = ["E", "F", "I", "B", "W", "C90", "PLR0912", "PLR0913", "PLR0915", "SIM"]
 fixable = ["ALL"]
 # ignore = ["E501"]
 
