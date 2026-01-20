@@ -24,8 +24,7 @@ tasks:
     desc: Install pre-commit hooks
     cmds:
       - uv tool install pre-commit --with pre-commit-uv
-      - uv run --no-sync pre-commit install
-      - uv run --no-sync pre-commit install --hook-type pre-push
+      - uv run --no-sync pre-commit install    # Install all the pre-commit hooks listed in .pre-commit-config.yaml
 
   setup:
     desc: Complete developer onboarding setup
