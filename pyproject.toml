@@ -30,10 +30,14 @@ line-length = 88
 # target-version = "py313"
 
 [tool.ruff.lint]
-# "E" (Error), "F" (Flake8), "I" (Isort/Import sorting)
-select = ["E", "F", "I", "B", "W"]
+# "E" (Error), "F" (Flake8), "I" (Isort/Import sorting), "B" (Bugbear), "W" (Warning)
+# "C90" (McCabe complexity), "PLR" (Pylint refactor - complexity checks)
+select = ["E", "F", "I", "B", "W", "C90", "PLR0912", "PLR0913", "PLR0915"]
 fixable = ["ALL"]
 # ignore = ["E501"]
+
+# Complexity thresholds
+mccabe.max-complexity = 10  # Maximum cyclomatic complexity (default: 10)
 
 [tool.ruff.format]
 quote-style = "double"
