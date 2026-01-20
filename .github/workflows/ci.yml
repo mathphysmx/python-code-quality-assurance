@@ -13,16 +13,13 @@ jobs:
           enable-cache: true
           version: "latest"
 
-      - name: Set up Python
-        run: uv python install 3.13
-
       - name: Install Task
         uses: arduino/setup-task@v2
         with:
           version: 3.x
 
-      - name: Install Dependencies
-        run: uv sync --frozen
+      - name: Set up Python
+        run: uv run task setup:python
 
       - name: Run CI Suite
         run: uv run task ci:full-suite
