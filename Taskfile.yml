@@ -1,20 +1,39 @@
 version: '3'
 
+vars:
+  # Dynamically read the Python version so you never hardcode it here
+  PY_VERSION: 
+    sh: cat .python-version
+
 tasks:
 
-  uv-env-setup:
-    desc: Set up Python uv environment and install dev dependencies
-    cmds:
-      # - uv python install 3.13
-      - uv add --dev pytest pytest-cov ipykernel ruff mypy pyright
-      - uv sync --frozen
+#### Setup Tasks
 
-  sync:
-    desc: Sync dependencies and install hooks
+  check-lock:
+    desc: Verify lock file matches declared dependencies (fail if out-of-date)
     cmds:
-      - uv sync
-      - uv run pre-commit install
-      - uv run pre-commit install --hook-type pre-push
+      - uv lock --check   # check if uv.lock file is up to date with declared dependencies in pyproject.toml
+
+  setup:python:
+    desc: Set up Python environment
+    cmds:
+      - uv python install {{.PY_VERSION}}
+      - uv sync --frozen  # Sync (creates .venv/) without updating the `uv.lock` file
+
+  setup:pre-commit:  # Used by pre-commit hooks
+    desc: Install pre-commit hooks
+    cmds:
+      - uv tool install pre-commit --with pre-commit-uv
+      - uv run --no-sync pre-commit install
+      - uv run --no-sync pre-commit install --hook-type pre-push
+
+  setup:
+    desc: Complete developer onboarding setup
+    cmds:
+      - task: setup:python
+      - task: setup:pre-commit
+
+#### CI Tasks
 
   ci:lint:
     desc: Run Ruff via uv
@@ -40,7 +59,8 @@ tasks:
   ci:full-suite:
     desc: Run all checks
     cmds:
+      - task: check-lock
       - task: ci:lint
-      - task: typecheck:pyright # default VSCode type checker used by Pylance VS Code extension, but lacks some features of Mypy
+      - task: typecheck:pyright   # default VS Code type checker used by Pylance VS Code extension, but lacks some features of Mypy
       - task: typecheck:mypy
       - task: test
